@@ -325,3 +325,7 @@ public partial class HomePage : ContentPage
         e.Handled = true;
     }
 }
+
+
+# Entry Design 
+https://youtu.be/QUHSdp6Z_iI?feature=shared
