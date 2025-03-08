@@ -329,3 +329,50 @@ public partial class HomePage : ContentPage
 
 # Entry Design 
 https://youtu.be/QUHSdp6Z_iI?feature=shared
+#New Version Lottie Json Animation
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:skkia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI"
+             x:Class="MauiApp1.HomePage"
+             BackgroundColor="White">
+
+
+    <Grid>
+        <!-- Background Content (Will Be Blurred) -->
+        <Grid >
+            <ScrollView>
+                <StackLayout Padding="10">
+                    <Frame Padding="10" CornerRadius="10" BackgroundColor="LightGreen">
+                        <Label Text="Jasmine" FontSize="20" HorizontalOptions="Center" />
+                    </Frame>
+
+                    <Frame Padding="10" CornerRadius="10" BackgroundColor="LightYellow">
+                        <Label Text="Sunflower" FontSize="20" HorizontalOptions="Center" />
+                    </Frame>
+
+                    <Frame Padding="10" CornerRadius="10" BackgroundColor="LightCoral">
+                        <Label Text="Tulip" FontSize="20" HorizontalOptions="Center" />
+                    </Frame>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- Blur Effect Overlay (Covers Background Only) -->
+        <BoxView 
+             BackgroundColor="Gray"
+             Opacity="0.7"
+             IsVisible="True"/>
+
+        <!-- Loading Animation - Stays Sharp & In Front -->
+        <Grid x:Name="LoadingOverlay" IsVisible="True">
+            <skkia:SKLottieView Source="Animation - 1741416789118.json" 
+                            RepeatCount="-1"                           
+                            HeightRequest="200"
+                            WidthRequest="200"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>
