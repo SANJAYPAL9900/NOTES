@@ -376,3 +376,293 @@ https://youtu.be/QUHSdp6Z_iI?feature=shared
         </Grid>
     </Grid>
 </ContentPage>
+#Multi Selected Item Drop down
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.DropDown"
+             Title="DropDown">
+    <VerticalStackLayout Padding="10">
+
+        <!-- Selected Items Display -->
+        <Border Stroke="Gray" StrokeThickness="1" Padding="10">
+            <HorizontalStackLayout>
+
+                <!-- Hide this Label when items are selected -->
+                <Label Text="Select Items:" 
+                       VerticalOptions="Center"
+                       IsVisible="{Binding IsPlaceholderVisible}"/>
+
+                <!-- CollectionView to Display Selected Items -->
+                <CollectionView ItemsSource="{Binding SelectedItems}" 
+                                HorizontalScrollBarVisibility="Never"
+                                ItemsLayout="HorizontalList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Stroke="Gray" StrokeThickness="1" Padding="5" Margin="2">
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding}" VerticalOptions="Center"/>
+                                    <Button Text="❌" Padding="5" Clicked="OnRemoveSelectedItem" CommandParameter="{Binding}" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="▼" Clicked="ToggleDropdown"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <!-- Dropdown List -->
+        <Border x:Name="DropdownBorder" Stroke="Gray" StrokeThickness="1" Padding="5" IsVisible="False">
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding}" Padding="10" BackgroundColor="White">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnItemTapped" CommandParameter="{Binding}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+
+    </VerticalStackLayout>
+</ContentPage>
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+
+namespace MauiApp1;
+
+public partial class DropDown : ContentPage, INotifyPropertyChanged
+{
+    public ObservableCollection<string> Items { get; set; }
+    public ObservableCollection<string> SelectedItems { get; set; }
+
+    private bool _isPlaceholderVisible = true;
+    public bool IsPlaceholderVisible
+    {
+        get => _isPlaceholderVisible;
+        set
+        {
+            _isPlaceholderVisible = value;
+            OnPropertyChanged(nameof(IsPlaceholderVisible));
+        }
+    }
+
+    public DropDown()
+    {
+        InitializeComponent();
+
+        // Populate Dropdown Items
+        Items = new ObservableCollection<string> { "Apple", "Banana", "Cherry", "Date", "Grape" };
+
+        // List to Store Selected Items
+        SelectedItems = new ObservableCollection<string>();
+        SelectedItems.CollectionChanged += (s, e) => UpdatePlaceholderVisibility();
+
+        // Set BindingContext to this Page
+        BindingContext = this;
+    }
+
+    // Toggle Dropdown Visibility
+    private void ToggleDropdown(object sender, EventArgs e)
+    {
+        DropdownBorder.IsVisible = !DropdownBorder.IsVisible;
+    }
+
+    // Handle Item Selection
+    private void OnItemTapped(object sender, TappedEventArgs e)
+    {
+        if (e.Parameter is string selectedItem)
+        {
+            if (!SelectedItems.Contains(selectedItem))
+            {
+                SelectedItems.Add(selectedItem);
+            }
+        }
+        DropdownBorder.IsVisible = false; // Close dropdown after selection
+        UpdatePlaceholderVisibility();
+    }
+
+    // Handle Removing a Selected Item
+    private void OnRemoveSelectedItem(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is string item)
+        {
+            SelectedItems.Remove(item);
+        }
+        UpdatePlaceholderVisibility();
+    }
+
+    // Update the visibility of the "Select Items:" text
+    private void UpdatePlaceholderVisibility()
+    {
+        IsPlaceholderVisible = SelectedItems.Count == 0;
+    }
+}
+#Dynamically Displaying item 
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.DropDown"
+             Title="DropDown">
+    <VerticalStackLayout Padding="10">
+
+        <!-- Selected Items Display -->
+        <Border Stroke="Gray" StrokeThickness="1" Padding="10">
+            <HorizontalStackLayout>
+
+                <!-- Hide this Label when items are selected -->
+                <Label Text="Select Items:" 
+                       VerticalOptions="Center"
+                       IsVisible="{Binding IsPlaceholderVisible}"/>
+
+                <!-- CollectionView to Display Selected Items -->
+                <CollectionView ItemsSource="{Binding SelectedItems}" 
+                                HorizontalScrollBarVisibility="Never"
+                                ItemsLayout="HorizontalList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Stroke="Gray" StrokeThickness="1" Padding="5" Margin="2">
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding}" VerticalOptions="Center"/>
+                                    <Button Text="❌" Padding="5" Clicked="OnRemoveSelectedItem" CommandParameter="{Binding}" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button Text="▼" Clicked="ToggleDropdown"/>
+            </HorizontalStackLayout>
+        </Border>
+
+        <!-- Dropdown List -->
+        <Border x:Name="DropdownBorder" Stroke="Gray" StrokeThickness="1" Padding="5" IsVisible="False">
+            <CollectionView ItemsSource="{Binding Options}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding}" Padding="10" BackgroundColor="White">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnItemTapped" CommandParameter="{Binding}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+
+    </VerticalStackLayout>
+</ContentPage>
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Net.Http.Json;
+
+namespace MauiApp1;
+
+public partial class DropDown : ContentPage, INotifyPropertyChanged
+{
+    public ObservableCollection<string> Options { get; set; } = new(); // Fetched from API
+    public ObservableCollection<string> SelectedItems { get; set; } = new();
+
+    private bool _isPlaceholderVisible = true;
+    public bool IsPlaceholderVisible
+    {
+        get => _isPlaceholderVisible;
+        set
+        {
+            _isPlaceholderVisible = value;
+            OnPropertyChanged(nameof(IsPlaceholderVisible));
+        }
+    }
+
+    public DropDown()
+    {
+        InitializeComponent();
+        BindingContext = this;
+
+        // Call API to Load Options
+        LoadOptionsFromAPI();
+    }
+
+    private async void LoadOptionsFromAPI()
+    {
+        try
+        {
+            using HttpClient client = new HttpClient();
+            var response = await client.GetFromJsonAsync<ApiResponse>("https://yourapi.com/getOptions");
+
+            if (response != null)
+            {
+                Options.Clear();
+                foreach (var item in response.Options)
+                {
+                    Options.Add(item);
+                }
+
+                // Automatically add default selected values from API
+                if (response.CustomizeValues != null)
+                {
+                    foreach (var customItem in response.CustomizeValues)
+                    {
+                        if (!SelectedItems.Contains(customItem))
+                        {
+                            SelectedItems.Add(customItem);
+                        }
+                    }
+                }
+            }
+
+            // Update Placeholder Visibility
+            UpdatePlaceholderVisibility();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching options: {ex.Message}");
+        }
+    }
+
+    // Toggle Dropdown Visibility
+    private void ToggleDropdown(object sender, EventArgs e)
+    {
+        DropdownBorder.IsVisible = !DropdownBorder.IsVisible;
+    }
+
+    // Handle Item Selection
+    private void OnItemTapped(object sender, TappedEventArgs e)
+    {
+        if (e.Parameter is string selectedItem)
+        {
+            if (!SelectedItems.Contains(selectedItem))
+            {
+                SelectedItems.Add(selectedItem);
+            }
+        }
+        DropdownBorder.IsVisible = false; // Close dropdown after selection
+        UpdatePlaceholderVisibility();
+    }
+
+    // Handle Removing a Selected Item
+    private void OnRemoveSelectedItem(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is string item)
+        {
+            SelectedItems.Remove(item);
+        }
+        UpdatePlaceholderVisibility();
+    }
+
+    // Update the visibility of the "Select Items:" text
+    private void UpdatePlaceholderVisibility()
+    {
+        IsPlaceholderVisible = SelectedItems.Count == 0;
+    }
+}
+
+// Model for API Response
+public class ApiResponse
+{
+    public List<string> Options { get; set; } = new();       // Normal dropdown options
+    public List<string> CustomizeValues { get; set; } = new(); // Values to be auto-selected
+}
