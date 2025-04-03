@@ -666,3 +666,31 @@ public class ApiResponse
     public List<string> Options { get; set; } = new();       // Normal dropdown options
     public List<string> CustomizeValues { get; set; } = new(); // Values to be auto-selected
 }
+
+
+## Read More Button Design
+    <VerticalStackLayout>
+        <Frame CornerRadius="10"
+           BorderColor="Black"
+           HasShadow="True"
+           Padding="10"
+           WidthRequest="200"
+           HeightRequest="90"
+           HorizontalOptions="Center"
+           VerticalOptions="Center">
+            <VerticalStackLayout>
+                <Label Text="" HeightRequest="40"/>
+                <!-- Spacer to push button down -->
+
+                <Button Text="Read More" 
+                    CornerRadius="7"
+                    WidthRequest="70"
+                    HeightRequest="3"
+                    FontSize="10"
+                    HorizontalOptions="Start"
+                    VerticalOptions="End"
+                    Padding="0,0,-6,25" 
+                    Margin="-10,10,30,85"/>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
