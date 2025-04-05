@@ -669,28 +669,61 @@ public class ApiResponse
 
 
 ## Read More Button Design
-    <VerticalStackLayout>
-        <Frame CornerRadius="10"
-           BorderColor="Black"
-           HasShadow="True"
-           Padding="10"
-           WidthRequest="200"
-           HeightRequest="90"
-           HorizontalOptions="Center"
-           VerticalOptions="Center">
-            <VerticalStackLayout>
-                <Label Text="" HeightRequest="40"/>
-                <!-- Spacer to push button down -->
+   <?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobilePracticeProject.MainPage">
 
-                <Button Text="Read More" 
-                    CornerRadius="7"
-                    WidthRequest="70"
-                    HeightRequest="3"
-                    FontSize="10"
-                    HorizontalOptions="Start"
-                    VerticalOptions="End"
-                    Padding="0,0,-6,25" 
-                    Margin="-10,10,30,85"/>
-            </VerticalStackLayout>
+    <StackLayout Padding="20">
+
+        <!-- Header -->
+        <Label Text="Header" 
+               FontSize="15" 
+               FontAttributes="Bold"
+               Margin="2,0,0,-2" />
+
+        <!-- Frame with NO padding -->
+        <Frame 
+               CornerRadius="0"
+               HasShadow="True"
+               Padding="0"
+               Margin="0"
+               BackgroundColor="Black">
+
+            <Grid Padding="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- Label with tight line spacing -->
+                <Label Grid.Row="0"
+                       TextColor="White"
+                       Text="This is a short description that spans two lines and gives some info."
+                       FontSize="12"
+                       LineBreakMode="WordWrap"
+                       Margin="0"
+                       Padding="0"
+                       LineHeight="0.1" />
+
+                <!-- Button with margin from label -->
+                <Button Grid.Row="1"
+                        Text="Read More"
+                        FontSize="9"
+                        FontAttributes="Bold"
+                        Padding="1,2"
+                        MinimumHeightRequest="1"
+                        HeightRequest="15"
+                        HorizontalOptions="Start"
+                        VerticalOptions="End"
+                        BackgroundColor="#007AFF"
+                        TextColor="White"
+                        CornerRadius="0"
+                        Margin="0,10,0,0" />
+            </Grid>
+
         </Frame>
-    </VerticalStackLayout>
+
+    </StackLayout>
+
+</ContentPage>
